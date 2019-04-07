@@ -10,9 +10,9 @@ const providers = require( './providers/' );
 
 const app = express();
 
-const DEFAULT_AVATAR_PROVIDER = 'file';
-const DEFAULT_LISTEN_PORT =  4000;
-const DEFAULT_SIZE = 80 ;
+const DEFAULT_AVATAR_PROVIDER = 'file';
+const DEFAULT_LISTEN_PORT =  4000;
+const DEFAULT_SIZE = 80 ;
 
 const MIN_AVATAR_SIZE = 1;
 const MAX_AVATAR_SIZE = 512;
@@ -21,17 +21,17 @@ const DEFAULT_VALUES_ALLOWED = [
     '404',
 ];
 
-let defaultSize = process.env.DEFAULT_SIZE || DEFAULT_SIZE;
+let defaultSize = process.env.DEFAULT_SIZE || DEFAULT_SIZE;
 let avatarProvider = process.env.PROVIDER || DEFAULT_AVATAR_PROVIDER;
 let listenPort = process.env.LISTEN_PORT || DEFAULT_LISTEN_PORT;
 
-if ( defaultSize < MIN_AVATAR_SIZE || defaultSize > MAX_AVATAR_SIZE ) {
-    console.warn( `Provided default size is either too larger or too small, falling back to ${ DEFAULT_SIZE }` );
+if ( defaultSize < MIN_AVATAR_SIZE || defaultSize > MAX_AVATAR_SIZE ) {
+    console.warn( `Provided default size is either too larger or too small, falling back to ${ DEFAULT_SIZE }` );
     defaultSize = DEFAULT_SIZE;
 }
 
 if ( !Object.keys( providers ).includes( avatarProvider ) ) {
-    console.warn( `Unknown provider ${ avatarProvider }. Falling back to ${ DEFAULT_AVATAR_PROVIDER }` );
+    console.warn( `Unknown provider ${ avatarProvider }. Falling back to ${ DEFAULT_AVATAR_PROVIDER }` );
     avatarProvider = DEFAULT_AVATAR_PROVIDER;
 }
 
