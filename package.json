@@ -1,7 +1,7 @@
 {
-  "name": "@stendahls/libreavatar-server",
+  "name": "@stendahls/libravatar-server",
   "version": "1.0.0",
-  "description": "A node implementation of the [Libreavatar API](https://wiki.libravatar.org/api/)",
+  "description": "A node implementation of the Libravatar API",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,13 +21,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stendahls/libreavatar-server.git"
+    "url": "git+https://github.com/stendahls/libravatar-server.git"
   },
   "bugs": {
-    "url": "https://github.com/stendahls/libreavatar-server/issues"
+    "url": "https://github.com/stendahls/libravatar-server/issues"
   },
-  "homepage": "https://github.com/stendahls/libreavatar-server#readme",
+  "homepage": "https://github.com/stendahls/libravatar-server#readme",
   "bin": {
-    "libreavatar-server": "./server.js"
+    "libravatar-server": "./server.js"
   }
 }

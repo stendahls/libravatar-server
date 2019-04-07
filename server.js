@@ -114,5 +114,5 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
 } );
 
 app.listen( listenPort, () => {
-    console.log( `Libreavatar server now running on localhost:${ listenPort }` );
+    console.log( `libravatar server now running on localhost:${ listenPort }` );
 } );

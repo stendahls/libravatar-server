@@ -1,11 +1,11 @@
-# Libreavatar Server
+# Libravatar Server
 
-A node implementation of the [Libreavatar API](https://wiki.libravatar.org/api/)
+A node implementation of the [Libravatar API](https://wiki.libravatar.org/api/)
 
 ## Usage
 
 ```shell
-$ npx @stendahls/libreavatar-server
+$ npx @stendahls/libravatar-server
 ```
 
 ## Configuration
