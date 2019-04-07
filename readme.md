@@ -39,3 +39,24 @@ want the avatar to be for. `my.email@example.com.jpg`
 `FILE_PROVIDER_RAW_FOLDER`  
 default: `./raw`  
 allowed values: Any path
+
+
+#### Elvis
+Loads avatars from a "container" in [Elvis DAM](https://www.woodwing.com/en/digital-asset-management-system)
+
+
+`ELVIS_PROVIDER_SERVER`  
+Full url to Elvis server
+
+`ELVIS_PROVIDER_USER`  
+Username to log in with
+
+`ELVIS_PROVIDER_PASSWORD`  
+Password for the user to login with
+
+
+`ELVIS_PROVIDER_AVATAR_CONTAINER`  
+What container-id to look for avatars in
+
+`ELVIS_PROVIDER_AVATAR_DOMAIN`  
+Domain for the avatars found in Elvis, such as `example.com`

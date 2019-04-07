@@ -35,6 +35,28 @@ if ( !Object.keys( providers ).includes( avatarProvider ) ) {
     avatarProvider = DEFAULT_AVATAR_PROVIDER;
 }
 
+if ( avatarProvider === 'elvis' ) {
+    if ( typeof process.env.ELVIS_PROVIDER_SERVER === 'undefined' ) {
+        throw new Error( `Missing required value ELVIS_PROVIDER_SERVER for ${ avatarProvider } provider` );
+    }
+
+    if ( typeof process.env.ELVIS_PROVIDER_USER === 'undefined' ) {
+        throw new Error( `Missing required value ELVIS_PROVIDER_USER for ${ avatarProvider } provider` );
+    }
+
+    if ( typeof process.env.ELVIS_PROVIDER_PASSWORD === 'undefined' ) {
+        throw new Error( `Missing required value ELVIS_PROVIDER_PASSWORD for ${ avatarProvider } provider` );
+    }
+
+    if ( typeof process.env.ELVIS_PROVIDER_AVATAR_CONTAINER === 'undefined' ) {
+        throw new Error( `Missing required value ELVIS_PROVIDER_AVATAR_CONTAINER for ${ avatarProvider } provider` );
+    }
+
+    if ( typeof process.env.ELVIS_PROVIDER_AVATAR_DOMAIN === 'undefined' ) {
+        throw new Error( `Missing required value ELVIS_PROVIDER_AVATAR_DOMAIN for ${ avatarProvider } provider` );
+    }
+}
+
 app.get( '/', ( request, response ) => {
     response.send( `<!DOCTYPE html>
 <html lang="en">
