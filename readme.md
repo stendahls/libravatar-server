@@ -20,7 +20,7 @@ allowed values: Kinda whatever you want
 
 `DEFAULT_SIZE`  
 default: 80  
-allowed values: 16, 32, 48, 64, 80, 96, 128, 256, 512
+allowed values: 1 - 512
 
 `PROVIDER`  
 default: file  

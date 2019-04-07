@@ -11,17 +11,8 @@ const providers = require( './providers/' );
 const app = express();
 
 const LISTEN_PORT = process.env.LISTEN_PORT || 4000;
-const ALLOWED_SIZES = [
-    16,
-    32,
-    48,
-    64,
-    80,
-    96,
-    128,
-    256,
-    512,
-];
+const MAX_AVATAR_SIZE = 512;
+const MIN_AVATAR_SIZE = 1;
 const DEFAULT_SIZE = process.env.DEFAULT_SIZE || 80 ;
 const DEFAULT_VALUES_ALLOWED = [
     '404',
@@ -47,7 +38,7 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
     if ( request.query.s ) {
         const querySize = Number( request.query.s );
 
-        if ( ALLOWED_SIZES.includes( querySize ) ) {
+        if ( querySize >= MIN_AVATAR_SIZE && querySize <= MAX_AVATAR_SIZE ) {
             targetSize = querySize;
         }
     }
@@ -56,7 +47,7 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
     if ( request.query.size ) {
         const querySize = Number( request.query.size );
 
-        if ( ALLOWED_SIZES.includes( querySize ) ) {
+        if ( querySize >= MIN_AVATAR_SIZE && querySize <= MAX_AVATAR_SIZE ) {
             targetSize = querySize;
         }
     }
