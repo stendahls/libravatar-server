@@ -24,7 +24,7 @@ allowed values: 1 - 512
 
 `PROVIDER`  
 default: file  
-allowed values: `file`
+allowed values: `file` `elvis`
 
 There might also be some specific options for some providers
 
