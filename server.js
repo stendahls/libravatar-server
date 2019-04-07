@@ -9,7 +9,7 @@ const providers = require( './providers/' );
 
 const app = express();
 
-const LISTEN_PORT = 4000 || process.env.LISTEN_PORT;
+const LISTEN_PORT = process.env.LISTEN_PORT || 4000;
 const ALLOWED_SIZES = [
     16,
     32,
@@ -21,7 +21,7 @@ const ALLOWED_SIZES = [
     256,
     512,
 ];
-const DEFAULT_SIZE = 80 || process.env.DEFAULT_SIZE;
+const DEFAULT_SIZE = process.env.DEFAULT_SIZE || 80 ;
 const DEFAULT_VALUES_ALLOWED = [
     '404',
 ];
