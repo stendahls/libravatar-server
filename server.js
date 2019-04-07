@@ -113,6 +113,6 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
     response.send( avatarImage );
 } );
 
-app.listen( LISTEN_PORT, () => {
-    console.log( `Libreavatar server now running on localhost:${ LISTEN_PORT }` );
+app.listen( listenPort, () => {
+    console.log( `Libreavatar server now running on localhost:${ listenPort }` );
 } );
