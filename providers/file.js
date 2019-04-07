@@ -7,7 +7,7 @@ const sharp = require( 'sharp' );
 
 const promiseReaddir = promisify( fs.readdir );
 
-const RAW_FILE_DATA_PATH = path.join( __dirname, '..', 'raw' );
+const RAW_FILE_DATA_PATH = process.env.FILE_PROVIDER_RAW_FOLDER || path.join( __dirname, '..', 'raw' );
 
 const md5 = function md5 ( inputData ) {
     return crypto.createHash( 'md5' ).update( inputData ).digest( 'hex' );
