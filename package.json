@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/stendahls/libreavatar-server/issues"
   },
-  "homepage": "https://github.com/stendahls/libreavatar-server#readme"
+  "homepage": "https://github.com/stendahls/libreavatar-server#readme",
+  "bin": {
+    "libreavatar-server": "./server.js"
+  }
 }
