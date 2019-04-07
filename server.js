@@ -35,6 +35,31 @@ if ( !Object.keys( providers ).includes( avatarProvider ) ) {
     avatarProvider = DEFAULT_AVATAR_PROVIDER;
 }
 
+app.get( '/', ( request, response ) => {
+    response.send( `<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <title>Libravatar server</title>
+ </head>
+ <body>
+  <h1>Libravatar image server</h1>
+  <p>
+   This is a
+   <a href="https://www.libravatar.org/">Libravatar</a>
+   compatible avatar image server powered by
+   <a href="https://github.com/stendahls/libravatar-server">libravatar server</a>.
+  </p>
+  <p>
+   Libravatar is a federated and open source alternative to the Gravatar
+   service and has one goal:
+   <strong>
+    Providing avatar images for email and OpenID addresses.
+   </strong>
+  </p>
+ </body>
+</html>` );
+} );
+
 app.get( '/avatar/:emailHash', async ( request, response ) => {
     let forceDefault = false;
     let avatarImage = false;
