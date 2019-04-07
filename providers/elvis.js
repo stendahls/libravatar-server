@@ -7,6 +7,8 @@ const hash = require( '../modules/hash.js' );
 
 const elvisClient = new ElvisClient( process.env.ELVIS_PROVIDER_SERVER );
 
+const cache = {};
+
 module.exports = async ( emailHash, targetSize ) => {
     await elvisClient.login( process.env.ELVIS_PROVIDER_USER, process.env.ELVIS_PROVIDER_PASSWORD );
     const data = await elvisClient.search( [
@@ -24,12 +26,18 @@ module.exports = async ( emailHash, targetSize ) => {
             const email = `${ searchResult.metadata.subjectPerson }@${ process.env.ELVIS_PROVIDER_AVATAR_DOMAIN }`.toLowerCase();
 
             if ( emailHash.length === 64 ) {
-                hashes[ hash.sha256( email ) ] = searchResult.previewUrl;
+                hashes[ hash.sha256( email ) ] = {
+                    url: searchResult.previewUrl,
+                    assetModified: searchResult.metadata.assetModified.value,
+                };
 
                 return true;
             }
 
-            hashes[ hash.md5( email ) ] = searchResult.previewUrl;
+            hashes[ hash.md5( email ) ] = {
+                url: searchResult.previewUrl,
+                assetModified: searchResult.metadata.assetModified.value,
+            };
 
             return true;
         } );
@@ -39,7 +47,14 @@ module.exports = async ( emailHash, targetSize ) => {
     }
 
     let chunks = [];
-    const readStream = elvisClient.stream( hashes[ emailHash ] );
+
+    if ( cache[ emailHash ] && cache[ emailHash ].assetModified >= hashes[ emailHash ].assetModified ) {
+        return sharp( cache[ emailHash ].data )
+            .resize( targetSize, targetSize )
+            .toBuffer();
+    }
+
+    const readStream = elvisClient.stream( hashes[ emailHash ].url );
 
     readStream.on( 'data', ( chunk ) => {
         chunks.push( chunk );
@@ -47,7 +62,12 @@ module.exports = async ( emailHash, targetSize ) => {
 
     return new Promise( ( resolve, reject ) => {
         readStream.on( 'end', () => {
-            const avatarImage = sharp( Buffer.concat( chunks ) )
+            cache[ emailHash ] = {
+                assetModified: hashes[ emailHash ].assetModified,
+                data: Buffer.concat( chunks ),
+            };
+
+            const avatarImage = sharp( cache[ emailHash ].data )
                 .resize( targetSize, targetSize )
                 .toBuffer();
 
