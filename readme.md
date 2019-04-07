@@ -8,6 +8,12 @@ A node implementation of the [Libravatar API](https://wiki.libravatar.org/api/)
 $ npx @stendahls/libravatar-server
 ```
 
+Without npx
+```shell
+npm i @stendahls/libravatar-server --only=production
+./node_modules/.bin/libravatar-server
+```
+
 ## Configuration
 
 Create a `.env` file in the folder you start the server from
