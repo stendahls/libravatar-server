@@ -1,0 +1,29 @@
+{
+  "name": "@stendahls/libreavatar-server",
+  "version": "1.0.0",
+  "description": "A node implementation of the [Libreavatar API](https://wiki.libravatar.org/api/)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "sharp": "^0.22.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stendahls/libreavatar-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stendahls/libreavatar-server/issues"
+  },
+  "homepage": "https://github.com/stendahls/libreavatar-server#readme"
+}
