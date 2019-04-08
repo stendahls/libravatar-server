@@ -7,18 +7,50 @@ const hash = require( '../modules/hash.js' );
 
 const elvisClient = new ElvisClient( process.env.ELVIS_PROVIDER_SERVER );
 
-const cache = {};
-
-module.exports = async ( emailHash, targetSize ) => {
-    await elvisClient.login( process.env.ELVIS_PROVIDER_USER, process.env.ELVIS_PROVIDER_PASSWORD );
-    const data = await elvisClient.search( [
+const updateLookupCache = function updateLookupCache(){
+    return elvisClient.search( [
         `relatedTo:${ process.env.ELVIS_PROVIDER_AVATAR_CONTAINER }`,
         'relationTarget:child',
         'relationType:contains',
     ] );
+};
+
+const cache = {};
+let lookupCache = false;
+
+( async () => {
+    await elvisClient.login( process.env.ELVIS_PROVIDER_USER, process.env.ELVIS_PROVIDER_PASSWORD );
+
+    lookupCache = await updateLookupCache();
+
+    setInterval( async () => {
+        try {
+            const updatedCache = await updateLookupCache();
+
+            if ( !updatedCache ) {
+                console.error( `Unable to update lookup cache.`);
+
+                return true;
+            }
+
+            lookupCache = updatedCache;
+        } catch ( updateError ) {
+            console.error( updateError );
+        }
+    }, 60000 );
+} )();
+
+module.exports = async ( emailHash, targetSize ) => {
     const hashes = {};
 
-    files = data.hits
+    if ( !lookupCache.hits ) {
+        console.warn( `Unable to load images from Elvis` );
+        console.warn( data );
+
+        return false;
+    }
+
+    files = lookupCache.hits
         .filter( ( searchResult ) => {
             return searchResult.metadata.subjectPerson;
         } )
