@@ -42,6 +42,7 @@ let lookupCache = false;
 
     setInterval( () => {
         // Relogin every 15 minutes
+        console.log( 'Re-login' );
         elvisClient.login( process.env.ELVIS_PROVIDER_USER, process.env.ELVIS_PROVIDER_PASSWORD );
     }, 900000 );
 } )();

@@ -21,6 +21,9 @@ class ElvisClient {
 
                 console.log( `Successuflly logged in to Elivs server version ${ response.serverVersion } at ${ this.hostUrl }` );
                 this.token = response.authToken;
+            } )
+            .catch( ( loginError ) => {
+                console.error( loginError );
             } );
     }
 
