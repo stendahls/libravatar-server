@@ -156,7 +156,7 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
                     avatarImage = await sharp( path.join( __dirname, 'assets', 'default.jpg' ) )
                         .resize( targetSize, targetSize )
                         .toBuffer();
-                        
+
                     defaultImageCache[ defaultKey ] = avatarImage;
                 }
         }

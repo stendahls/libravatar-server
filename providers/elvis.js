@@ -27,7 +27,8 @@ let lookupCache = false;
         try {
             const updatedCache = await updateLookupCache();
 
-            if ( !updatedCache ) {
+            if ( !updatedCache || updatedCache.errorcode ) {
+                console.log( updatedCache );
                 console.error( `Unable to update lookup cache.`);
 
                 return true;
@@ -38,6 +39,11 @@ let lookupCache = false;
             console.error( updateError );
         }
     }, 60000 );
+
+    setInterval( () => {
+        // Relogin every 15 minutes
+        elvisClient.login( process.env.ELVIS_PROVIDER_USER, process.env.ELVIS_PROVIDER_PASSWORD );
+    }, 900000 );
 } )();
 
 module.exports = async ( emailHash, targetSize ) => {
