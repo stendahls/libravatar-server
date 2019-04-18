@@ -16,7 +16,8 @@ npm i @stendahls/libravatar-server --only=production
 
 ## Configuration
 
-Create a `.env` file in the folder you start the server from
+Create a `.env` file in the folder you start the server from.  
+If you run from docker, create the .env file in the folder you build.
 
 ### Available values
 
