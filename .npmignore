@@ -1,2 +1,4 @@
 Dockerfile
 manifest.yml
+.env
+.DS_store
