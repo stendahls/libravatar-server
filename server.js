@@ -57,6 +57,8 @@ if ( avatarProvider === 'elvis' ) {
     }
 }
 
+const defaultImageCache = {};
+
 app.get( '/', ( request, response ) => {
     response.send( `<!DOCTYPE html>
 <html lang="en">
@@ -131,6 +133,7 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
 
     if ( !avatarImage ) {
         let defaultFallback = false;
+        let defaultKey = `${ targetSize }x${ targetSize }`;
 
         if ( request.query.d && DEFAULT_VALUES_ALLOWED.includes( request.query.d ) ) {
             defaultFallback = request.query.d;
@@ -147,9 +150,15 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
 
                 return true;
             default:
-                avatarImage = await sharp( path.join( __dirname, 'assets', 'default.jpg' ) )
-                    .resize( targetSize, targetSize )
-                    .toBuffer();
+                if ( defaultImageCache[ defaultKey ] ) {
+                    avatarImage = defaultImageCache[ defaultKey ];
+                } else {
+                    avatarImage = await sharp( path.join( __dirname, 'assets', 'default.jpg' ) )
+                        .resize( targetSize, targetSize )
+                        .toBuffer();
+                        
+                    defaultImageCache[ defaultKey ] = avatarImage;
+                }
         }
     }
 
@@ -161,5 +170,5 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
 } );
 
 app.listen( listenPort, () => {
-    console.log( `libravatar server now running on localhost:${ listenPort } with provider ${ avatarProvider }` );
+    console.log( `libravatar server now running on localhost:${ listenPort } with provider ${ avatarProvider }` );
 } );

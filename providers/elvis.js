@@ -45,7 +45,7 @@ module.exports = async ( emailHash, targetSize ) => {
 
     if ( !lookupCache.hits ) {
         console.warn( `Unable to load images from Elvis` );
-        console.warn( data );
+        console.warn( lookupCache );
 
         return false;
     }
@@ -81,9 +81,18 @@ module.exports = async ( emailHash, targetSize ) => {
     let chunks = [];
 
     if ( cache[ emailHash ] && cache[ emailHash ].assetModified >= hashes[ emailHash ].assetModified ) {
-        return sharp( cache[ emailHash ].data )
+        const targetKey = `${ targetSize }x${ targetSize }`
+        if ( cache[ emailHash ].resizedImages[ targetKey ] ) {
+            return cache[ emailHash ].resizedImages[ targetKey ];
+        }
+
+        const avatarImage = sharp( cache[ emailHash ].data )
             .resize( targetSize, targetSize )
             .toBuffer();
+
+        cache[ emailHash ].resizedImages[ targetKey ] = avatarImage;
+
+        return avatarImage;
     }
 
     const readStream = elvisClient.stream( hashes[ emailHash ].url );
@@ -96,12 +105,15 @@ module.exports = async ( emailHash, targetSize ) => {
         readStream.on( 'end', () => {
             cache[ emailHash ] = {
                 assetModified: hashes[ emailHash ].assetModified,
-                data: Buffer.concat( chunks ),
+                imageData: Buffer.concat( chunks ),
+                resizedImages: {},
             };
 
-            const avatarImage = sharp( cache[ emailHash ].data )
+            const avatarImage = sharp( cache[ emailHash ].imageData )
                 .resize( targetSize, targetSize )
                 .toBuffer();
+
+            cache[ emailHash ].resizedImages[ `${ targetSize }x${ targetSize }` ] = avatarImage;
 
             resolve( avatarImage );
         } );
