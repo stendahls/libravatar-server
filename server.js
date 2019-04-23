@@ -17,10 +17,6 @@ const DEFAULT_SIZE = 80 ;
 const MIN_AVATAR_SIZE = 1;
 const MAX_AVATAR_SIZE = 512;
 
-const DEFAULT_VALUES_ALLOWED = [
-    '404',
-];
-
 let defaultSize = process.env.DEFAULT_SIZE || DEFAULT_SIZE;
 let avatarProvider = process.env.PROVIDER || DEFAULT_AVATAR_PROVIDER;
 let listenPort = process.env.LISTEN_PORT || DEFAULT_LISTEN_PORT;
@@ -135,30 +131,37 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
         let defaultFallback = false;
         let defaultKey = `${ targetSize }x${ targetSize }`;
 
-        if ( request.query.d && DEFAULT_VALUES_ALLOWED.includes( request.query.d ) ) {
+        if ( request.query.d ) {
             defaultFallback = request.query.d;
         }
 
         // Override d with default if available
-        if ( request.query.default && DEFAULT_VALUES_ALLOWED.includes( request.query.default ) ) {
+        if ( request.query.default ) {
             defaultFallback = request.query.default;
         }
 
-        switch ( defaultFallback ) {
-            case '404':
+        if ( defaultFallback ) {
+            console.log(defaultFallback);
+
+            if ( defaultFallback === '404' ) {
                 response.sendStatus( 404 );
 
                 return true;
-            default:
-                if ( defaultImageCache[ defaultKey ] ) {
-                    avatarImage = defaultImageCache[ defaultKey ];
-                } else {
-                    avatarImage = await sharp( path.join( __dirname, 'assets', 'default.jpg' ) )
-                        .resize( targetSize, targetSize )
-                        .toBuffer();
+            }
 
-                    defaultImageCache[ defaultKey ] = avatarImage;
-                }
+            response.redirect( 302, defaultFallback );
+
+            return true;
+        }
+
+        if ( defaultImageCache[ defaultKey ] ) {
+            avatarImage = defaultImageCache[ defaultKey ];
+        } else {
+            avatarImage = await sharp( path.join( __dirname, 'assets', 'default.jpg' ) )
+                .resize( targetSize, targetSize )
+                .toBuffer();
+
+            defaultImageCache[ defaultKey ] = avatarImage;
         }
     }
 
