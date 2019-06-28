@@ -80,6 +80,14 @@ app.get( '/', ( request, response ) => {
 </html>` );
 } );
 
+app.get( '/avatar', async ( request, response ) => {
+    response.status( 400 ).send( 'URI is wrong, should be avatar/$hash' );
+} );
+
+app.get( '/avatar/', async ( request, response ) => {
+    response.status( 400 ).send( 'Hash has to be 32 or 64 characters long' );
+} );
+
 app.get( '/avatar/:emailHash', async ( request, response ) => {
     let forceDefault = false;
     let avatarImage = false;
