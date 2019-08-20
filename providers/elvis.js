@@ -93,13 +93,18 @@ module.exports = async ( emailHash, targetSize ) => {
             return cache[ emailHash ].resizedImages[ targetKey ];
         }
 
-        const avatarImage = sharp( cache[ emailHash ].data )
-            .resize( targetSize, targetSize )
-            .toBuffer();
+        try {
+            const avatarImage = await sharp( cache[ emailHash ].data )
+                .resize( targetSize, targetSize )
+                .toBuffer();
 
-        cache[ emailHash ].resizedImages[ targetKey ] = avatarImage;
+            cache[ emailHash ].resizedImages[ targetKey ] = avatarImage;
 
-        return avatarImage;
+            return avatarImage;
+        } catch ( cacheReadError ) {
+            console.error( `Failed to load the hash ${ emailHash } from cache` );
+            console.error( cache[ emailHash ] );
+        }
     }
 
     const readStream = elvisClient.stream( hashes[ emailHash ].url );
@@ -109,14 +114,14 @@ module.exports = async ( emailHash, targetSize ) => {
     } );
 
     return new Promise( ( resolve, reject ) => {
-        readStream.on( 'end', () => {
+        readStream.on( 'end', async () => {
             cache[ emailHash ] = {
                 assetModified: hashes[ emailHash ].assetModified,
                 imageData: Buffer.concat( chunks ),
                 resizedImages: {},
             };
 
-            const avatarImage = sharp( cache[ emailHash ].imageData )
+            const avatarImage = await sharp( cache[ emailHash ].imageData )
                 .resize( targetSize, targetSize )
                 .toBuffer();
 
