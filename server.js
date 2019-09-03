@@ -15,7 +15,7 @@ const DEFAULT_LISTEN_PORT =  4000;
 const DEFAULT_SIZE = 80 ;
 
 const MIN_AVATAR_SIZE = 1;
-const MAX_AVATAR_SIZE = 512;
+const MAX_AVATAR_SIZE = 1024;
 
 let defaultSize = process.env.DEFAULT_SIZE || DEFAULT_SIZE;
 let avatarProvider = process.env.PROVIDER || DEFAULT_AVATAR_PROVIDER;
