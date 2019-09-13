@@ -1,5 +1,3 @@
-const fs = require( 'fs' );
-
 const sharp = require( 'sharp' );
 
 const ElvisClient = require( '../modules/ElvisClient.js' );
