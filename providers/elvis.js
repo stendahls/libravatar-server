@@ -86,17 +86,21 @@ module.exports = async ( emailHash, targetSize ) => {
     let chunks = [];
 
     if ( cache[ emailHash ] && cache[ emailHash ].assetModified >= hashes[ emailHash ].assetModified ) {
-        const targetKey = `${ targetSize }x${ targetSize }`
-        if ( cache[ emailHash ].resizedImages[ targetKey ] ) {
-            return cache[ emailHash ].resizedImages[ targetKey ];
+        const sizeKey = `${ targetSize }x${ targetSize }`
+        if ( cache[ emailHash ].resizedImages[ sizeKey ] ) {
+            return cache[ emailHash ].resizedImages[ sizeKey ];
         }
 
         try {
             const avatarImage = await sharp( cache[ emailHash ].data )
-                .resize( targetSize, targetSize )
+                .resize( {
+                    width: targetSize,
+                    height: targetSize,
+                    fit: 'cover',
+                } )
                 .toBuffer();
 
-            cache[ emailHash ].resizedImages[ targetKey ] = avatarImage;
+            cache[ emailHash ].resizedImages[ sizeKey ] = avatarImage;
 
             return avatarImage;
         } catch ( cacheReadError ) {
@@ -120,7 +124,11 @@ module.exports = async ( emailHash, targetSize ) => {
             };
 
             const avatarImage = await sharp( cache[ emailHash ].imageData )
-                .resize( targetSize, targetSize )
+                .resize( {
+                    width: targetSize,
+                    height: targetSize,
+                    fit: 'cover',
+                } )
                 .toBuffer();
 
             cache[ emailHash ].resizedImages[ `${ targetSize }x${ targetSize }` ] = avatarImage;
