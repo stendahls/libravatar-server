@@ -31,6 +31,16 @@ if ( !Object.keys( providers ).includes( avatarProvider ) ) {
     avatarProvider = DEFAULT_AVATAR_PROVIDER;
 }
 
+const providersOrder = (process.env.PROVIDER_ORDER || '')
+    .split(',')
+    .map((providerName) => {
+        if (!providers[providerName]) {
+            throw new Error( `Could not find provider ${ providerName }` );
+        }
+
+        return providers[providerName]
+    });
+
 if ( avatarProvider === 'elvis' ) {
     if ( typeof process.env.ELVIS_PROVIDER_SERVER === 'undefined' ) {
         throw new Error( `Missing required value ELVIS_PROVIDER_SERVER for ${ avatarProvider } provider` );
@@ -99,7 +109,7 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
         return false;
     }
 
-    const emailHash = request.params.emailHash.toLocaleLowerCase();
+    const { emailHash } = request.params;
 
     if ( emailHash.length !== 32 && emailHash.length !== 64 ) {
         response.sendStatus( 400 );
@@ -134,7 +144,11 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
     }
 
     if ( !forceDefault ) {
-        avatarImage = await providers[ avatarProvider ]( emailHash, targetSize );
+        let i = 0;
+        while (i < providersOrder.length && !avatarImage) {
+            avatarImage = await providersOrder[i](emailHash, targetSize);
+            i = i + 1;
+        }
     }
 
     if ( !avatarImage ) {
