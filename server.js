@@ -99,7 +99,9 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
         return false;
     }
 
-    if ( request.params.emailHash.length !== 32 && request.params.emailHash.length !== 64 ) {
+    const emailHash = request.params.emailHash.toLocaleLowerCase();
+
+    if ( emailHash.length !== 32 && emailHash.length !== 64 ) {
         response.sendStatus( 400 );
 
         return false;
@@ -132,7 +134,7 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
     }
 
     if ( !forceDefault ) {
-        avatarImage = await providers[ avatarProvider ]( request.params.emailHash, targetSize );
+        avatarImage = await providers[ avatarProvider ]( emailHash, targetSize );
     }
 
     if ( !avatarImage ) {
