@@ -26,7 +26,7 @@ if ( defaultSize < MIN_AVATAR_SIZE || defaultSize > MAX_AVATAR_SIZE ) {
     defaultSize = DEFAULT_SIZE;
 }
 
-const providersOrder = (process.env.PROVIDER_ORDER || DEFAULT_AVATAR_PROVIDER)
+const providersOrder = (process.env.PROVIDER_ORDER || avatarProvider)
     .split(',')
     .map((providerName) => {
         if (!providers[providerName]) {
@@ -38,23 +38,23 @@ const providersOrder = (process.env.PROVIDER_ORDER || DEFAULT_AVATAR_PROVIDER)
 
 if ( providersOrder.includes('elvis') ) {
     if ( typeof process.env.ELVIS_PROVIDER_SERVER === 'undefined' ) {
-        throw new Error( `Missing required value ELVIS_PROVIDER_SERVER for ${ avatarProvider } provider` );
+        throw new Error( `Missing required value ELVIS_PROVIDER_SERVER for 'elvis' provider` );
     }
 
     if ( typeof process.env.ELVIS_PROVIDER_USER === 'undefined' ) {
-        throw new Error( `Missing required value ELVIS_PROVIDER_USER for ${ avatarProvider } provider` );
+        throw new Error( `Missing required value ELVIS_PROVIDER_USER for 'elvis' provider` );
     }
 
     if ( typeof process.env.ELVIS_PROVIDER_PASSWORD === 'undefined' ) {
-        throw new Error( `Missing required value ELVIS_PROVIDER_PASSWORD for ${ avatarProvider } provider` );
+        throw new Error( `Missing required value ELVIS_PROVIDER_PASSWORD for 'elvis' provider` );
     }
 
     if ( typeof process.env.ELVIS_PROVIDER_AVATAR_CONTAINER === 'undefined' ) {
-        throw new Error( `Missing required value ELVIS_PROVIDER_AVATAR_CONTAINER for ${ avatarProvider } provider` );
+        throw new Error( `Missing required value ELVIS_PROVIDER_AVATAR_CONTAINER for 'elvis' provider` );
     }
 
     if ( typeof process.env.ELVIS_PROVIDER_AVATAR_DOMAIN === 'undefined' ) {
-        throw new Error( `Missing required value ELVIS_PROVIDER_AVATAR_DOMAIN for ${ avatarProvider } provider` );
+        throw new Error( `Missing required value ELVIS_PROVIDER_AVATAR_DOMAIN for 'elvis' provider` );
     }
 }
 
