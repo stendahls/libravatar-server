@@ -36,7 +36,7 @@ allowed values: `file` `elvis`
 
 `PROVIDER_ORDER`  
 Comma separated list of which providers should be used in which order.  
-default: `file`  
+default: `file` or value from PROVIDER if set  
 allowed values: `file`, `elvis` and `libravatarOrg`  
 example: `file,elvis,libravatarOrg`
 
