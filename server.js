@@ -193,5 +193,5 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
 } );
 
 app.listen( listenPort, () => {
-    console.log( `libravatar server now running on localhost:${ listenPort } with provider ${ avatarProvider }` );
+    console.log( `libravatar server now running on localhost:${ listenPort } with providers [${ providersOrder }]` );
 } );
