@@ -29,6 +29,11 @@ allowed values: Kinda whatever you want
 default: 80  
 allowed values: 1 - 512
 
+`PROVIDER`  
+DEPRECATED, use `PROVIDER_ORDER` instead
+default: file  
+allowed values: `file` `elvis`
+
 `PROVIDER_ORDER`  
 Comma separated list of which providers should be used in which order.  
 default: `file`  
