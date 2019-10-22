@@ -30,8 +30,15 @@ default: 80
 allowed values: 1 - 512
 
 `PROVIDER`  
+DEPRECATED, use `PROVIDER_ORDER` instead
 default: file  
 allowed values: `file` `elvis`
+
+`PROVIDER_ORDER`  
+Comma separated list of which providers should be used in which order.  
+default: `file` or value from PROVIDER if set  
+allowed values: `file`, `elvis` and `libravatarOrg`  
+example: `file,elvis,libravatarOrg`
 
 There might also be some specific options for some providers
 
@@ -67,3 +74,6 @@ What container-id to look for avatars in
 
 `ELVIS_PROVIDER_AVATAR_DOMAIN`  
 Domain for the avatars found in Elvis, such as `example.com`
+
+#### Libravatar Org
+Gets avatars from https://libravatar.org which fallbacks to Gravatar

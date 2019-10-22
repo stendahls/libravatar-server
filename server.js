@@ -26,30 +26,35 @@ if ( defaultSize < MIN_AVATAR_SIZE || defaultSize > MAX_AVATAR_SIZE ) {
     defaultSize = DEFAULT_SIZE;
 }
 
-if ( !Object.keys( providers ).includes( avatarProvider ) ) {
-    console.warn( `Unknown provider ${ avatarProvider }. Falling back to ${ DEFAULT_AVATAR_PROVIDER }` );
-    avatarProvider = DEFAULT_AVATAR_PROVIDER;
-}
+const providersOrder = (process.env.PROVIDER_ORDER || avatarProvider)
+    .split(',')
+    .map((providerName) => {
+        if (!providers[providerName]) {
+            throw new Error( `Could not find provider ${ providerName }` );
+        }
 
-if ( avatarProvider === 'elvis' ) {
+        return providerName;
+    });
+
+if ( providersOrder.includes('elvis') ) {
     if ( typeof process.env.ELVIS_PROVIDER_SERVER === 'undefined' ) {
-        throw new Error( `Missing required value ELVIS_PROVIDER_SERVER for ${ avatarProvider } provider` );
+        throw new Error( `Missing required value ELVIS_PROVIDER_SERVER for 'elvis' provider` );
     }
 
     if ( typeof process.env.ELVIS_PROVIDER_USER === 'undefined' ) {
-        throw new Error( `Missing required value ELVIS_PROVIDER_USER for ${ avatarProvider } provider` );
+        throw new Error( `Missing required value ELVIS_PROVIDER_USER for 'elvis' provider` );
     }
 
     if ( typeof process.env.ELVIS_PROVIDER_PASSWORD === 'undefined' ) {
-        throw new Error( `Missing required value ELVIS_PROVIDER_PASSWORD for ${ avatarProvider } provider` );
+        throw new Error( `Missing required value ELVIS_PROVIDER_PASSWORD for 'elvis' provider` );
     }
 
     if ( typeof process.env.ELVIS_PROVIDER_AVATAR_CONTAINER === 'undefined' ) {
-        throw new Error( `Missing required value ELVIS_PROVIDER_AVATAR_CONTAINER for ${ avatarProvider } provider` );
+        throw new Error( `Missing required value ELVIS_PROVIDER_AVATAR_CONTAINER for 'elvis' provider` );
     }
 
     if ( typeof process.env.ELVIS_PROVIDER_AVATAR_DOMAIN === 'undefined' ) {
-        throw new Error( `Missing required value ELVIS_PROVIDER_AVATAR_DOMAIN for ${ avatarProvider } provider` );
+        throw new Error( `Missing required value ELVIS_PROVIDER_AVATAR_DOMAIN for 'elvis' provider` );
     }
 }
 
@@ -99,7 +104,9 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
         return false;
     }
 
-    if ( request.params.emailHash.length !== 32 && request.params.emailHash.length !== 64 ) {
+    const { emailHash } = request.params;
+
+    if ( emailHash.length !== 32 && emailHash.length !== 64 ) {
         response.sendStatus( 400 );
 
         return false;
@@ -132,7 +139,12 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
     }
 
     if ( !forceDefault ) {
-        avatarImage = await providers[ avatarProvider ]( request.params.emailHash, targetSize );
+        let i = 0;
+        while (i < providersOrder.length && !avatarImage) {
+            const provider = providers[providersOrder[i]];
+            avatarImage = await provider(emailHash, targetSize);
+            i = i + 1;
+        }
     }
 
     if ( !avatarImage ) {
@@ -181,5 +193,5 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
 } );
 
 app.listen( listenPort, () => {
-    console.log( `libravatar server now running on localhost:${ listenPort } with provider ${ avatarProvider }` );
+    console.log( `libravatar server now running on localhost:${ listenPort } with providers [${ providersOrder }]` );
 } );
