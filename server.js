@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 require( 'dotenv' ).config();
-const path = require( 'path' );
 
 const express = require( 'express' );
-const sharp = require( 'sharp' );
 
 const providers = require( './providers/' );
+const silhouetteImage = require('./modules/silhouetteImage');
+const isUrl = require('is-url');
 
 const app = express();
 
@@ -149,7 +149,6 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
 
     if ( !avatarImage ) {
         let defaultFallback = false;
-        let defaultKey = `${ targetSize }x${ targetSize }`;
 
         if ( request.query.d ) {
             defaultFallback = request.query.d;
@@ -160,28 +159,29 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
             defaultFallback = request.query.default;
         }
 
-        if ( defaultFallback ) {
-            console.log(defaultFallback);
-
-            if ( defaultFallback === '404' ) {
-                response.sendStatus( 404 );
-
-                return true;
-            }
-
+        // Special values for default fallback
+        // https://wiki.libravatar.org/api/
+        // Each case can either set `avatarImage` to
+        // set the avatar image to return
+        // or return true to stop checking
+        if (defaultFallback === '404') {
+            response.sendStatus( 404 );
+            return true;
+        }
+        if (defaultFallback === 'mm') {
+            avatarImage = await silhouetteImage.get(targetSize);
+        }
+        // If `defaultFallback` is a url, redirect to it
+        if ( isUrl(defaultFallback) ) {
             response.redirect( 302, defaultFallback );
 
             return true;
         }
 
-        if ( defaultImageCache[ defaultKey ] ) {
-            avatarImage = defaultImageCache[ defaultKey ];
-        } else {
-            avatarImage = await sharp( path.join( __dirname, 'assets', 'default.jpg' ) )
-                .resize( targetSize, targetSize )
-                .toBuffer();
-
-            defaultImageCache[ defaultKey ] = avatarImage;
+        // After checking all default fallbacks, fallback
+        // to getting a silhouetteImage instead
+        if (!avatarImage) {
+            avatarImage = await silhouetteImage.get(targetSize);
         }
     }
 
