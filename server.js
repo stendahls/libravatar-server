@@ -58,8 +58,6 @@ if ( providersOrder.includes('elvis') ) {
     }
 }
 
-const defaultImageCache = {};
-
 app.get( '/', ( request, response ) => {
     response.send( `<!DOCTYPE html>
 <html lang="en">
