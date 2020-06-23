@@ -86,7 +86,8 @@ module.exports = async ( emailHash, targetSize ) => {
     let chunks = [];
 
     if ( cache[ emailHash ] && cache[ emailHash ].assetModified >= hashes[ emailHash ].assetModified ) {
-        const sizeKey = `${ targetSize }x${ targetSize }`
+        const sizeKey = `${ targetSize }x${ targetSize }`;
+        
         if ( cache[ emailHash ].resizedImages[ sizeKey ] ) {
             return cache[ emailHash ].resizedImages[ sizeKey ];
         }
@@ -104,7 +105,7 @@ module.exports = async ( emailHash, targetSize ) => {
 
             return avatarImage;
         } catch ( cacheReadError ) {
-            console.error( `Failed to load the hash ${ emailHash } from cache` );
+            console.error( `Failed to load the hash ${ emailHash } with size ${ sizeKey } from cache` );
             console.error( cache[ emailHash ] );
         }
     }
