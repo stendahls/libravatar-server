@@ -79,6 +79,11 @@ app.get( '/', ( request, response ) => {
     Providing avatar images for email and OpenID addresses.
    </strong>
   </p>
+  <p>
+    Non-standard options available: <br>
+    <b>disallowedproviders</b>
+    A comma separated list of providers that shouldn't be used. Available providers are file, elivs & libaravatarOrg
+  </p>
  </body>
 </html>` );
 } );
@@ -95,6 +100,7 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
     let forceDefault = false;
     let avatarImage = false;
     let targetSize = defaultSize;
+    let disallowedProviders = [];
 
     if ( !request.params.emailHash ) {
         response.sendStatus( 404 );
@@ -135,13 +141,24 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
     if ( request.query.forcedefault ) {
         forceDefault = true;
     }
+    
+    
+    if ( request.query.disallowedproviders ){
+        disallowedProviders = request.query.disallowedproviders.split(',');
+    }
 
     if ( !forceDefault ) {
-        let i = 0;
-        while (i < providersOrder.length && !avatarImage) {
-            const provider = providers[providersOrder[i]];
+        for(const providerName of providersOrder){            
+            if ( disallowedProviders.includes( providerName ) ) {
+                continue;
+            }
+            const provider = providers[providerName];
+            
             avatarImage = await provider(emailHash, targetSize);
-            i = i + 1;
+            
+            if(avatarImage){
+                break;
+            }
         }
     }
 
