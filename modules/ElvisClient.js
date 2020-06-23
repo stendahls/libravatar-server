@@ -19,7 +19,7 @@ class ElvisClient {
                     throw new Error( `Failed to login to server. Got ${ response.loginFaultMessage }` );
                 }
 
-                console.log( `Successuflly logged in to Elvis server version ${ response.serverVersion } at ${ this.hostUrl }` );
+                console.log( `Successuflly logged in to Elvis server version ${ response.serverVersion } at ${ this.hostUrl } with user ${ username }` );
                 this.token = response.authToken;
             } )
             .catch( ( loginError ) => {
