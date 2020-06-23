@@ -92,7 +92,7 @@ module.exports = async ( emailHash, targetSize ) => {
         }
 
         try {
-            const avatarImage = await sharp( cache[ emailHash ].data )
+            const avatarImage = await sharp( cache[ emailHash ].imageData )
                 .resize( {
                     width: targetSize,
                     height: targetSize,
