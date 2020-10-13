@@ -9,7 +9,6 @@ module.exports = {
             return cache.get(size);
         }
         
-        console.time('loading-silhouette');
         let image;
         try {
             image = await sharp( path.join( __dirname, 'silhouette.jpg' ) )
@@ -18,7 +17,6 @@ module.exports = {
         } catch (loadSilhouetteError){
             console.log(loadSilhouetteError);
         }
-        console.timeEnd('loading-silhouette');
         
         cache.set(size, image);
         
