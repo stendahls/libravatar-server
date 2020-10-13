@@ -154,7 +154,9 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
             }
             const provider = providers[providerName];
             
+            console.time(providerName);
             avatarImage = await provider(emailHash, targetSize);
+            console.timeEnd(providerName);
             
             if(avatarImage){
                 break;
