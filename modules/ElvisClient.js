@@ -8,14 +8,15 @@ class ElvisClient {
     login( username, password ) {
         return this.load( `${ this.hostUrl }/services/apilogin`, {
             method: 'POST',
-            query: {
+            form: {
                 username,
                 password,
             },
-            json: true,
+            responseType: 'json',
         } )
             .then( ( response ) => {
                 if ( !response.loginSuccess ) {
+                    console.log(response);
                     throw new Error( `Failed to login to server. Got ${ response.loginFaultMessage }` );
                 }
 
@@ -32,7 +33,7 @@ class ElvisClient {
         console.log( `Browsing ${ url }` );
 
         return this.load( url, {
-            json: true,
+            responseType: 'json',
         } );
     }
 
@@ -42,7 +43,7 @@ class ElvisClient {
         console.log( `Searching ${ url }` );
 
         return this.load( url, {
-            json: true,
+            responseType: 'json',
         } );
     }
 

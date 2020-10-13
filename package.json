@@ -14,9 +14,9 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "got": "^9.6.0",
+    "got": "^11.7.0",
     "is-url": "^1.2.4",
-    "sharp": "^0.25.4"
+    "sharp": "^0.26.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
@@ -30,6 +30,6 @@
   },
   "homepage": "https://github.com/stendahls/libravatar-server#readme",
   "bin": {
-    "libravatar-server": "./server.js"
+    "libravatar-server": "server.js"
   }
 }
