@@ -155,7 +155,11 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
             const provider = providers[providerName];
             
             console.time(providerName);
-            avatarImage = await provider(emailHash, targetSize);
+            try {
+                avatarImage = await provider(emailHash, targetSize);
+            } catch (providerError){
+                console.error(providerError);
+            }
             console.timeEnd(providerName);
             
             if(avatarImage){
@@ -183,11 +187,17 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
         // or return true to stop checking
         if (defaultFallback === '404') {
             response.sendStatus( 404 );
+            
             return true;
         }
         if (defaultFallback === 'mm') {
-            avatarImage = await silhouetteImage.get(targetSize);
+            try {
+                avatarImage = await silhouetteImage.get(targetSize);
+            } catch (silhouetteError){
+                console.error(silhouetteError);
+            }
         }
+        
         // If `defaultFallback` is a url, redirect to it
         if ( isUrl(defaultFallback) ) {
             response.redirect( 302, defaultFallback );
@@ -198,7 +208,11 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
         // After checking all default fallbacks, fallback
         // to getting a silhouetteImage instead
         if (!avatarImage) {
-            avatarImage = await silhouetteImage.get(targetSize);
+            try {
+                avatarImage = await silhouetteImage.get(targetSize);
+            } catch (silhouetteError){
+                console.error(silhouetteError);
+            }
         }
     }
 
