@@ -12,6 +12,7 @@ module.exports = async (emailHash, targetSize, response) => {
     try {
         const { body } = await got(libravatarUrl, {
             encoding: null,
+            timeout: 2000,
         });
         
         cache.set(libravatarUrl, body);
