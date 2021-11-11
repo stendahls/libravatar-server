@@ -38,7 +38,7 @@ class ElvisClient {
     }
 
     search( options ) {
-        const query = options.join( ' ' );
+        const query = options.join( '%20' );
         const url = `${ this.hostUrl }/services/search?num=200&q=${ query }`;
         console.log( `Searching ${ url }` );
 
@@ -76,8 +76,11 @@ class ElvisClient {
             options.headers.Authorization = `Bearer ${ this.token }`;
         }
 
+        console.time(url);
+
         return got( url, options )
             .then( ( response ) => {
+                console.timeEnd(url);
                 return response.body;
             } )
             .catch( ( loadError ) => {
