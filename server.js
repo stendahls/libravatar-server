@@ -141,27 +141,28 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
     if ( request.query.forcedefault ) {
         forceDefault = true;
     }
-    
-    
+
+
     if ( request.query.disallowedproviders ){
         disallowedProviders = request.query.disallowedproviders.split(',');
     }
 
     if ( !forceDefault ) {
-        for(const providerName of providersOrder){            
+        for(const providerName of providersOrder){
             if ( disallowedProviders.includes( providerName ) ) {
                 continue;
             }
             const provider = providers[providerName];
-            
-            console.time(providerName);
+            const timeHash = `${providerName}-${targetSize}-${emailHash}`;
+
+            console.time(timeHash);
             try {
                 avatarImage = await provider(emailHash, targetSize);
             } catch (providerError){
                 console.error(providerError);
             }
-            console.timeEnd(providerName);
-            
+            console.timeEnd(timeHash);
+
             if(avatarImage){
                 break;
             }
@@ -187,7 +188,7 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
         // or return true to stop checking
         if (defaultFallback === '404') {
             response.sendStatus( 404 );
-            
+
             return true;
         }
         if (defaultFallback === 'mm') {
@@ -197,7 +198,7 @@ app.get( '/avatar/:emailHash', async ( request, response ) => {
                 console.error(silhouetteError);
             }
         }
-        
+
         // If `defaultFallback` is a url, redirect to it
         if ( isUrl(defaultFallback) ) {
             response.redirect( 302, defaultFallback );
