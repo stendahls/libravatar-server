@@ -16,7 +16,7 @@
     "express": "^4.17.1",
     "got": "^12.5.3",
     "is-url": "^1.2.4",
-    "sharp": "^0.30.5"
+    "sharp": "^0.32.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
