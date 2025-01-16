@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js",
+    "dev": "node --watch server.js",
     "start": "node server.js"
   },
   "keywords": [],
@@ -17,9 +17,6 @@
     "got": "^12.5.3",
     "is-url": "^1.2.4",
     "sharp": "^0.30.5"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.4"
   },
   "repository": {
     "type": "git",

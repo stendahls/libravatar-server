@@ -1,7 +1,11 @@
-const sharp = require( 'sharp' );
 
-const ElvisClient = require( '../modules/ElvisClient.js' );
-const hash = require( '../modules/hash.js' );
+import shart from 'sharp';
+import ElvisClient from '../modules/ElvisClient.js';
+import hash from '../modules/hash.js';
+// const sharp = require( 'sharp' );
+
+// const ElvisClient = require( '../modules/ElvisClient.js' );
+// const hash = require( '../modules/hash.js' );
 
 const elvisClient = new ElvisClient( process.env.ELVIS_PROVIDER_SERVER );
 
@@ -45,7 +49,7 @@ let lookupCache = false;
     }, 900000 );
 } )();
 
-module.exports = async ( emailHash, targetSize ) => {
+const elvis = async ( emailHash, targetSize ) => {
     const hashes = {};
 
     if ( !lookupCache.hits ) {
@@ -87,7 +91,7 @@ module.exports = async ( emailHash, targetSize ) => {
 
     if ( cache[ emailHash ] && cache[ emailHash ].assetModified >= hashes[ emailHash ].assetModified ) {
         const sizeKey = `${ targetSize }x${ targetSize }`;
-        
+
         if ( cache[ emailHash ].resizedImages[ sizeKey ] ) {
             return cache[ emailHash ].resizedImages[ sizeKey ];
         }
@@ -142,3 +146,5 @@ module.exports = async ( emailHash, targetSize ) => {
         } );
     } );
 };
+
+export default elvis;

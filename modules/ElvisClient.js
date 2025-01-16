@@ -1,6 +1,6 @@
-const got = require( 'got' );
+import got from 'got';
 
-class ElvisClient {
+export default class ElvisClient {
     constructor( hostUrl ) {
         this.hostUrl = hostUrl;
     }
@@ -102,4 +102,4 @@ class ElvisClient {
     }
 }
 
-module.exports = ElvisClient;
+// module.exports = ElvisClient;
