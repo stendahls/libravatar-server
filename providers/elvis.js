@@ -22,9 +22,22 @@ const cache = {};
 let lookupCache = false;
 
 ( async () => {
-    await elvisClient.login( process.env.ELVIS_PROVIDER_USER, process.env.ELVIS_PROVIDER_PASSWORD );
+    try {
+        await elvisClient.login( process.env.ELVIS_PROVIDER_USER, process.env.ELVIS_PROVIDER_PASSWORD );
+    } catch ( loginError ) {
+        console.error( `Unable to login to Elvis` );
+        console.error( loginError );
 
-    lookupCache = await updateLookupCache();
+        return true;
+    }
+
+    try {
+        lookupCache = await updateLookupCache();
+    } catch ( cacheError ) {
+        console.error( cacheError );
+
+        return true;
+    }
 
     setInterval( async () => {
         try {
