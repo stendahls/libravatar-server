@@ -8,7 +8,7 @@ const hash = require( '../modules/hash.js' );
 
 const promiseReaddir = promisify( fs.readdir );
 
-const RAW_FILE_DATA_PATH = process.env.FILE_PROVIDER_RAW_FOLDER || path.join( __dirname, '..', 'raw' );
+const RAW_FILE_DATA_PATH = process.env.FILE_PROVIDER_RAW_FOLDER || path.join( __dirname, '..', 'raw' );
 
 module.exports = async ( emailHash, targetSize ) => {
     const files = await promiseReaddir( RAW_FILE_DATA_PATH );
