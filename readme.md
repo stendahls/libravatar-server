@@ -5,7 +5,7 @@ A node implementation of the [Libravatar API](https://wiki.libravatar.org/api/)
 ## Usage
 
 ```shell
-$ npx @stendahls/libravatar-server
+$ npx @stendahls/libravatar-server
 ```
 
 Without npx
@@ -16,28 +16,28 @@ npm i @stendahls/libravatar-server --only=production
 
 ## Configuration
 
-Create a `.env` file in the folder you start the server from.  
+Create a `.env` file in the folder you start the server from.
 If you run from docker, create the .env file in the folder you build.
 
 ### Available values
 
-`LISTEN_PORT`  
-default: 4000  
+`LISTEN_PORT`
+default: 4000
 allowed values: Kinda whatever you want
 
-`DEFAULT_SIZE`  
-default: 80  
+`DEFAULT_SIZE`
+default: 80
 allowed values: 1 - 512
 
-`PROVIDER`  
+`PROVIDER`
 DEPRECATED, use `PROVIDER_ORDER` instead
-default: file  
+default: file
 allowed values: `file` `elvis`
 
-`PROVIDER_ORDER`  
-Comma separated list of which providers should be used in which order.  
-default: `file` or value from PROVIDER if set  
-allowed values: `file`, `elvis` and `libravatarOrg`  
+`PROVIDER_ORDER`
+Comma separated list of which providers should be used in which order.
+default: `file` or value from PROVIDER if set
+allowed values: `file`, `elvis` and `libravatarOrg`
 example: `file,elvis,libravatarOrg`
 
 There might also be some specific options for some providers
@@ -46,12 +46,12 @@ There might also be some specific options for some providers
 
 
 #### File
-Loads avatars from a folder.  
+Loads avatars from a folder.
 The folder should contain jpg images where the name of the file should be the email you
 want the avatar to be for. `my.email@example.com.jpg`
 
-`FILE_PROVIDER_RAW_FOLDER`  
-default: `./raw`  
+`FILE_PROVIDER_RAW_FOLDER`
+default: `./raw`
 allowed values: Any path
 
 
@@ -59,20 +59,20 @@ allowed values: Any path
 Loads avatars from a "container" in [Elvis DAM](https://www.woodwing.com/en/digital-asset-management-system)
 
 
-`ELVIS_PROVIDER_SERVER`  
+`ELVIS_PROVIDER_SERVER`
 Full url to Elvis server
 
-`ELVIS_PROVIDER_USER`  
+`ELVIS_PROVIDER_USER`
 Username to log in with
 
-`ELVIS_PROVIDER_PASSWORD`  
+`ELVIS_PROVIDER_PASSWORD`
 Password for the user to login with
 
 
-`ELVIS_PROVIDER_AVATAR_CONTAINER`  
+`ELVIS_PROVIDER_AVATAR_CONTAINER`
 What container-id to look for avatars in
 
-`ELVIS_PROVIDER_AVATAR_DOMAIN`  
+`ELVIS_PROVIDER_AVATAR_DOMAIN`
 Domain for the avatars found in Elvis, such as `example.com`
 
 #### Libravatar Org
