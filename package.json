@@ -1,6 +1,6 @@
 {
   "name": "@stendahls/libravatar-server",
-  "version": "1.8.2",
+  "version": "2.0.0",
   "description": "A node implementation of the Libravatar API",
   "main": "server.js",
   "scripts": {
