@@ -34,6 +34,7 @@ let lookupCache = false;
     try {
         lookupCache = await updateLookupCache();
     } catch ( cacheError ) {
+        console.error( `Unable to load lookup cache` );
         console.error( cacheError );
 
         return true;
