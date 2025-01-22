@@ -1,5 +1,6 @@
 
-import shart from 'sharp';
+import sharp from 'sharp';
+
 import ElvisClient from '../modules/ElvisClient.js';
 import hash from '../modules/hash.js';
 // const sharp = require( 'sharp' );
@@ -29,7 +30,7 @@ let lookupCache = false;
         try {
             const updatedCache = await updateLookupCache();
 
-            if ( !updatedCache || updatedCache.errorcode ) {
+            if ( !updatedCache || updatedCache.errorcode ) {
                 console.log( updatedCache );
                 console.error( `Unable to update lookup cache.`);
 
@@ -59,7 +60,7 @@ const elvis = async ( emailHash, targetSize ) => {
         return false;
     }
 
-    files = lookupCache.hits
+    lookupCache.hits
         .filter( ( searchResult ) => {
             return searchResult.metadata.subjectPerson;
         } )
@@ -89,15 +90,15 @@ const elvis = async ( emailHash, targetSize ) => {
 
     let chunks = [];
 
-    if ( cache[ emailHash ] && cache[ emailHash ].assetModified >= hashes[ emailHash ].assetModified ) {
-        const sizeKey = `${ targetSize }x${ targetSize }`;
+    if ( cache[ emailHash ] && cache[ emailHash ].assetModified >= hashes[ emailHash ].assetModified ) {
+        const sizeKey = `${ targetSize }x${ targetSize }`;
 
-        if ( cache[ emailHash ].resizedImages[ sizeKey ] ) {
-            return cache[ emailHash ].resizedImages[ sizeKey ];
+        if ( cache[ emailHash ].resizedImages[ sizeKey ] ) {
+            return cache[ emailHash ].resizedImages[ sizeKey ];
         }
 
         try {
-            const avatarImage = await sharp( cache[ emailHash ].imageData )
+            const avatarImage = await sharp( cache[ emailHash ].imageData )
                 .resize( {
                     width: targetSize,
                     height: targetSize,
@@ -105,12 +106,12 @@ const elvis = async ( emailHash, targetSize ) => {
                 } )
                 .toBuffer();
 
-            cache[ emailHash ].resizedImages[ sizeKey ] = avatarImage;
+            cache[ emailHash ].resizedImages[ sizeKey ] = avatarImage;
 
             return avatarImage;
         } catch ( cacheReadError ) {
-            console.error( `Failed to load the hash ${ emailHash } with size ${ sizeKey } from cache` );
-            console.error( cache[ emailHash ] );
+            console.error( `Failed to load the hash ${ emailHash } with size ${ sizeKey } from cache` );
+            console.error( cache[ emailHash ] );
         }
     }
 
@@ -122,13 +123,13 @@ const elvis = async ( emailHash, targetSize ) => {
 
     return new Promise( ( resolve, reject ) => {
         readStream.on( 'end', async () => {
-            cache[ emailHash ] = {
-                assetModified: hashes[ emailHash ].assetModified,
+            cache[ emailHash ] = {
+                assetModified: hashes[ emailHash ].assetModified,
                 imageData: Buffer.concat( chunks ),
                 resizedImages: {},
             };
 
-            const avatarImage = await sharp( cache[ emailHash ].imageData )
+            const avatarImage = await sharp( cache[ emailHash ].imageData )
                 .resize( {
                     width: targetSize,
                     height: targetSize,
@@ -136,7 +137,7 @@ const elvis = async ( emailHash, targetSize ) => {
                 } )
                 .toBuffer();
 
-            cache[ emailHash ].resizedImages[ `${ targetSize }x${ targetSize }` ] = avatarImage;
+            cache[ emailHash ].resizedImages[ `${ targetSize }x${ targetSize }` ] = avatarImage;
 
             resolve( avatarImage );
         } );
